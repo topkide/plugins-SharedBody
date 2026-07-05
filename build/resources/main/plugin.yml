@@ -1,0 +1,18 @@
+name: 'SharedBody'
+version: '1.0.0'
+main: 'com.dotorimaru.sharedbody.SharedBodyPlugin'
+api-version: '1.21'
+author: dotorimaru
+description: 모든 플레이어가 인벤토리/엔더상자/레벨/허기/체력을 공유
+
+commands:
+  공유:
+    description: 공유 시스템 제어
+    usage: /공유 <on|off|상태|초기화|리더설정|리더해제|제외설정|제외취소|제외인원|공유인원>
+    aliases: [sharedbody, share]
+    permission: sharedbody.admin
+
+permissions:
+  sharedbody.admin:
+    description: 공유 시스템 관리 권한
+    default: op

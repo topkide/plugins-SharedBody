@@ -1,0 +1,55 @@
+plugins {
+    id 'java'
+    id 'com.gradleup.shadow' version '8.3.9'
+}
+
+group = project.group
+version = project.version
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(21))
+    }
+}
+
+repositories {
+    maven { url = uri("https://repo.papermc.io/repository/maven-public/") }
+    mavenCentral()
+}
+
+dependencies {
+    // Paper API
+    compileOnly "io.papermc.paper:paper-api:1.21.8-R0.1-SNAPSHOT"
+
+    // Lombok (Core 컨벤션 유지)
+    compileOnly "org.projectlombok:lombok:1.18.32"
+    annotationProcessor "org.projectlombok:lombok:1.18.32"
+}
+
+ext {
+    set("projectName", project.name)
+    set("packageName", project.name.toLowerCase())
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+tasks.processResources {
+    filesMatching("plugin.yml") {
+        expand([
+                group: project.group,
+                version: project.version,
+                projectName: project.ext.projectName,
+                packageName: project.ext.packageName,
+        ])
+    }
+}
+
+tasks.named('shadowJar') {
+    archiveClassifier.set('')
+}
+
+tasks.named('build') {
+    dependsOn 'shadowJar'
+}
